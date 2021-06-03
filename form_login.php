@@ -19,10 +19,7 @@
 			<input type="password" name="captcha" class="caja-input" placeholder="&#128272; ingrese captcha" required>
 			<button type="submit" name="ingresar" id="ingresar">Ingresar</button>
 		</form>
-		<a href="form_insert_usuario">
-			<button>Crear una Cuenta</button>
-		</a>
+		No tienes una Cuenta? <a href="form_insert_usuario">Crear una Cuenta</a>
 	</div>
-	
 </body>
 </html>         
