@@ -6,7 +6,7 @@
 	} 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +19,7 @@
 		<label for="btn-menu"><i class="fas fa-bars"></i></label>
 		<nav class="menu">
 			<ul>
-				<li><a href="../form_mostrar_personal.php"><i class="fas fa-home"></i> Inicio</a></li>
+				<li><a href="../form_mostrar_personal"><i class="fas fa-home"></i> Inicio</a></li>
 				<li><a href="#">
 					<?php 
 					date_default_timezone_set('America/Asuncion');
