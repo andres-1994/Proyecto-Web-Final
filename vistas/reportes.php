@@ -1,12 +1,12 @@
 <?php
-	include('../controladores/conexion.php');
+include('../controladores/conexion.php');
 
-	session_start();
+session_start();
 
-	if(!isset($_SESSION["usuario"])){
+if(!isset($_SESSION["usuario"])){
 
-		header("Location:form_login");
-	}
+	header("Location:form_login");
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -14,13 +14,14 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="refresh" content="40">
+	<!-- BOOTSTRAP 5 -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- DATATABLES SU CSS -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+	<!-- FONT AWESOME CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"/>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css"/>
-	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css"/>
+	<!-- FUENTE MONSERRAT CSS -->
 	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.dataTables.min.css">
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;1,100&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="../css/vista_menu.css">
 	<title>Reportes Completos</title>
@@ -36,11 +37,6 @@
 			background: blue;
 			color: white;
 			text-align: center;
-		}
-		table.dataTable thead .sorting,
-		table.dataTable thead .sorting_asc,
-		table.dataTable thead .sorting_desc {
-			background: none;
 		}
 		@media screen and (max-width: 767px) {
 			li.paginate_button.previous {
@@ -86,65 +82,105 @@
 		}
 	</style>
 </head>
-<body>	
-	<div class="col-md-12">
-		<p id="alert" class="alert">Error de Conexion: Sin Internet!</p>
-		<h1 class="text-center mt-1">Teisa Comerciales & Soporte CAC</h1>
-		<div class="card">
-			<div class="card-header">
-				Reportes 
-			</div>
-			<div class="card-body">
-				<form action="../controladores/eliminar_marcado.php" method="POST">
-					<table id="mi-tabla" class="table table-striped table-bordered table-hover display nowrap" cellspacing="0" style="width:100%">
-						<thead>
-							<tr>
-								<th>Código</th>
-								<th>CI/DNI</th>
-								<th>Nombre</th>
-								<th>Apellido</th>
-								<th>Teléfono</th>
-								<th>Dirección</th>
-								<th>Correo</th>
-								<th>Estado</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php 
-							$query = "CALL mostrar_usuarios()";
-							$resultado = mysqli_query($conexion, $query);
-							while($row = mysqli_fetch_assoc($resultado)){
-								?>
-								<tr>
-									<td><?php echo $row['codigo']; ?></td>
-									<td><?php echo number_format($row['ci'],0,'','.'); ?></td>
-									<td><?php echo $row['nombre']; ?></td>
-									<td><?php echo $row['apellido']; ?></td>
-									<td><?php echo $row['telefono']; ?></td>
-									<td><?php echo $row['direccion']; ?></td>
-									<td><?php echo $row['correo']; ?></td>
-									<td><?php echo $row['estado']; ?></td>
-								</tr>
-							<?php  } mysqli_free_result($resultado); ?>
-						</tbody>	
-					</table>
-				</form>
-			</div>
-			<div class="card-footer text-primary text-center">
-				<?php $identificador = getenv("HTTP_USER_AGENT"); echo $identificador; ?>
-			</div>
+<body>
+<div class="container">
+	<h1 class="text-center text-primary mt-1">Teisa Comerciales & Soporte CAC</h1>
+	<div class="card mt-5">
+		<div class="card-header">
+			Reportes de Empleados
 		</div>
-	</div>		
-	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-	<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-	<script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
-	<script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-	<script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
-	<script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
-	<script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script>
+		<div class="card-body">
+			<table id="tabla_reporte" class="display" cellspacing="0" style="width:100%">
+				<thead>
+					<tr>
+						<th>Código</th>
+						<th>CI/DNI</th>
+						<th>Nombre</th>
+						<th>Apellido</th>
+						<th>Teléfono</th>
+						<th>Dirección</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php 
+					$query = "CALL mostrar_usuarios()";
+					$resultado = mysqli_query($conexion, $query);
+					while($row = mysqli_fetch_assoc($resultado)){
+						?>
+						<tr>
+							<td><?php echo $row['codigo']; ?></td>
+							<td><?php echo number_format($row['ci'],0,'','.'); ?></td>
+							<td><?php echo $row['nombre']; ?></td>
+							<td><?php echo $row['apellido']; ?></td>
+							<td><?php echo $row['telefono']; ?></td>
+							<td><?php echo $row['direccion']; ?></td>
+						</tr>
+					<?php  } mysqli_free_result($resultado); ?>
+				</tbody>	
+			</table>
+		</div>
+		<div class="card-footer text-primary text-center">
+			<?php $identificador = getenv("HTTP_USER_AGENT"); echo $identificador; ?>
+		</div>
+	</div>
+</div>
 </body>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script>
+/*=============================================
+  SCRIPT DE DATATABLE
+=============================================*/
+$(document).ready(function() {
+
+	var t = $('#tabla_reporte').DataTable({
+		"ordering": false, 
+		"order": [[2, "asc"]],
+		"responsive":true,
+		/*"dom": 'Blp',*/
+		"buttons":[
+			{
+				extend:    'excelHtml5',
+				text:      '<i class="fas fa-file-excel" style="color: green;"></i> ',
+				titleAttr: 'Exportar a Excel',
+				className: 'btn btn-success'
+			},
+			{
+				extend:    'pdfHtml5',
+				text:      '<i class="fas fa-file-pdf" style="color: red;"></i> ',
+				titleAttr: 'Exportar a PDF',
+				className: 'btn btn-danger'	
+			},
+			{
+				extend:    'print',
+				text:      '<i class="fa fa-print" style="color: blue;"></i> ',
+				titleAttr: 'Imprimir',
+				className: 'btn btn-info'
+			}
+		],
+
+		"language": {
+			"search": "Buscar:",
+			"lengthMenu": "Mostrar _MENU_ registros por página",
+			"zeroRecords": "No se encontraron resultados",
+			"info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+			"infoFiltered": "(filtrado de un total de _MAX_ registros)",
+			"infoEmpty": "No hay registros con esos datos",
+			"emptyTable": "No existe registros en la tabla",
+			"paginate": {
+			"first":      "Primero",
+			"last":       "Ultimo",
+			"next":       "Siguiente",
+			"previous":   "Anterior"
+			}
+		},
+
+		"lengthMenu": [[10, 20, 30, 50, -1], [10, 20, 30, 50, "Todo"]],
+		"pagingType": "full_numbers"
+
+		});
+	});
+/*=====  SCRIPT DE DATATABLES ======*/
+</script>
 </html>
+
