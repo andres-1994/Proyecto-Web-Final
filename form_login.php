@@ -12,7 +12,7 @@
 <body>
 	<div class="contenedor">
 		<form action="controladores/comprueba_login" method="POST" autocomplete="off">
-			<h2 class="titulo_sesion">Formulario Iniciar Sesión</h2>
+			<h2 class="titulo_sesion">Iniciar Sesión</h2>
 			<input type="text" name="usuario" id="usuario" class="caja-input" placeholder="&#128100; ingrese usuario" required>
 			<input type="password" name="contrasena" id="contrasena" class="caja-input" placeholder="&#128272; ingrese contraseña" required>
 			<img src="controladores/captcha.php" alt="" class="caja-captcha">
