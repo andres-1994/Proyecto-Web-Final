@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 session_start();
 
-if(!isset($_SESSION["usuario"])){
+if (!isset($_SESSION["usuario"])) {
 
 	header("Location:form_login.php");
 }
@@ -10,15 +10,17 @@ if(!isset($_SESSION["usuario"])){
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link rel="stylesheet" href="css/formulario.css">
 	<link rel="stylesheet" href="css/estilos.css">
 	<title>Formulario Insertar Nuevo</title>
 </head>
+
 <body>
 	<form action="controladores/insertar.php" method="post" class="form-register" enctype="multipart/form-data" autocomplete="off">
 		<div class="container--flex">
@@ -37,9 +39,26 @@ if(!isset($_SESSION["usuario"])){
 			<label for="correo" class="form__label">Correo</label>
 			<input type="email" id="correo" name="correo" class="form-control form__input" placeholder="✉ Ingrese su correo" required>
 		</div>
+		<!-- Codigo de prueba -->
 		<div class="container--flex">
-			<label for="direccion" class="form__label">Dirección</label>
-			<input type="text" id="direccion" name="direccion" class="form-control form__input" placeholder="Ingrese su direccion" required>
+			<label for="ciudad" class="form__label">Departamento</label>
+			<select name="lista1" id="lista1" class="form-control form__input">
+				<option value="0">Seleccione Departamento</option>
+				<option value="1">Central</option>
+				<option value="2">Cordillera</option>
+				<option value="3">Caaguazu</option>
+			</select>
+		</div>
+		<div class="container--flex">
+			<label for="direccion">Ciudad</label>
+			<div class="form__input">
+				<div id="select2lista"></div>
+			</div>
+		</div>
+		<!-- FIN Codigo de prueba -->
+		<div class="container--flex">
+			<label for="direccion" class="form__label">Direccion</label>
+			<input type="text" id="direccion" name="direccion" class="form-control form__input" placeholder="Ingrese una direccion" required>
 		</div>
 		<div class="container--flex">
 			<label for="fecha" class="form__label">Fecha Nacimiento</label>
@@ -62,5 +81,29 @@ if(!isset($_SESSION["usuario"])){
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="javascript/script_nombres.js"></script>
 	<script src="javascript/load-bar.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			/*$('#lista1').val(1);*/
+			recargarLista();
+
+			$('#lista1').change(function() {
+				recargarLista();
+			});
+		})
+	</script>
+	<script type="text/javascript">
+		function recargarLista() {
+			$.ajax({
+				type: "POST",
+				url: "ciudades.php",
+				data: "ciudades=" + $('#lista1').val(),
+				success: function(r) {
+					$('#select2lista').html(r);
+				}
+			});
+		}
+	</script>
 </body>
+
 </html>
